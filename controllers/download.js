@@ -7,22 +7,66 @@ var AWS = require('aws-sdk');
 AWS.config.update({region: 'ap-northeast-2'});
 // var credentials = new AWS.SharedIniFileCredentials({profile: 'mte'});
 // AWS.config.credentials = credentials;
-var sts = new AWS.STS();
-sts.assumeRole({
-  RoleArn: 'arn:aws:iam::612159056927:role/CodeDeployDemo-EC2-Instance-Profile',
-  RoleSessionName: 'awssdk'
-}, function(err, data) {
-  if (err) { // an error occurred
-    console.log('Cannot assume role');
-    console.log(err, err.stack);
-  } else { // successful response
-    AWS.config.update({
-      accessKeyId: data.Credentials.AccessKeyId,
-      secretAccessKey: data.Credentials.SecretAccessKey,
-      sessionToken: data.Credentials.SessionToken
-    });
-  }
+function getEC2Rolename(AWS){
+  var promise = new Promise((resolve,reject)=>{
+      
+      var metadata = new AWS.MetadataService();
+      
+      metadata.request('/latest/meta-data/iam/security-credentials/',function(err,rolename){
+          if(err) reject(err);
+          console.log(rolename);            
+          resolve(rolename);
+      });
+  });
+      
+  return promise;
+};
+
+function getEC2Credentials(AWS,rolename){
+  var promise = new Promise((resolve,reject)=>{
+      
+      var metadata = new AWS.MetadataService();
+      
+      metadata.request('/latest/meta-data/iam/security-credentials/'+rolename,function(err,data){
+          if(err) reject(err);   
+          
+          resolve(JSON.parse(data));            
+      });
+  });
+      
+  return promise;
+};
+
+getEC2Rolename(AWS)
+.then((rolename)=>{
+    return getEC2Credentials(AWS,rolename)
+})
+.then((credentials)=>{
+
+    AWS.config.accessKeyId=credentials.AccessKeyId;
+    AWS.config.secretAccessKey=credentials.SecretAccessKey;
+    AWS.config.sessionToken = credentials.Token;
+        
+})
+.catch((err)=>{
+    console.log(err);
 });
+// var sts = new AWS.STS();
+// sts.assumeRole({
+//   RoleArn: 'arn:aws:iam::612159056927:role/CodeDeployDemo-EC2-Instance-Profile',
+//   RoleSessionName: 'awssdk'
+// }, function(err, data) {
+//   if (err) { // an error occurred
+//     console.log('Cannot assume role');
+//     console.log(err, err.stack);
+//   } else { // successful response
+//     AWS.config.update({
+//       accessKeyId: data.Credentials.AccessKeyId,
+//       secretAccessKey: data.Credentials.SecretAccessKey,
+//       sessionToken: data.Credentials.SessionToken
+//     });
+//   }
+// });
 
 exports.download = (req, res, next) => {
     const cellId = req.body.cellId;
