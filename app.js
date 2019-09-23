@@ -1,3 +1,6 @@
+process.env.AWS_SDK_LOAD_CONFIG = "true"; 
+process.env.AWS_PROFILE="assume-role-profile";
+
 const path = require('path');
 
 const express = require('express');
