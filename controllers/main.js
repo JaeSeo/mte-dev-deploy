@@ -8,6 +8,22 @@ AWS.config.update({region: 'ap-northeast-2'});
 // AWS Credentials
 // var credentials = new AWS.SharedIniFileCredentials({profile: 'mte'});
 // AWS.config.credentials = credentials;
+var sts = new AWS.STS();
+sts.assumeRole({
+  RoleArn: 'arn:aws:iam::612159056927:role/CodeDeployDemo-EC2-Instance-Profile',
+  RoleSessionName: 'awssdk'
+}, function(err, data) {
+  if (err) { // an error occurred
+    console.log('Cannot assume role');
+    console.log(err, err.stack);
+  } else { // successful response
+    AWS.config.update({
+      accessKeyId: data.Credentials.AccessKeyId,
+      secretAccessKey: data.Credentials.SecretAccessKey,
+      sessionToken: data.Credentials.SessionToken
+    });
+  }
+});
 
 //ses
 var params = {
