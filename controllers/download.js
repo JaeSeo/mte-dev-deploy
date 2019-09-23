@@ -5,52 +5,10 @@ const Schedule = require('../models/schedule');
 var AWS = require('aws-sdk');
 // Set the region 
 AWS.config.update({region: 'ap-northeast-2'});
+AWS.config.getCredentials();
 // var credentials = new AWS.SharedIniFileCredentials({profile: 'mte'});
 // AWS.config.credentials = credentials;
-function getEC2Rolename(AWS){
-  var promise = new Promise((resolve,reject)=>{
-      
-      var metadata = new AWS.MetadataService();
-      
-      metadata.request('/latest/meta-data/iam/security-credentials/',function(err,rolename){
-          if(err) reject(err);
-          console.log(rolename);            
-          resolve(rolename);
-      });
-  });
-      
-  return promise;
-};
 
-function getEC2Credentials(AWS,rolename){
-  var promise = new Promise((resolve,reject)=>{
-      
-      var metadata = new AWS.MetadataService();
-      
-      metadata.request('/latest/meta-data/iam/security-credentials/'+rolename,function(err,data){
-          if(err) reject(err);   
-          
-          resolve(JSON.parse(data));            
-      });
-  });
-      
-  return promise;
-};
-
-getEC2Rolename(AWS)
-.then((rolename)=>{
-    return getEC2Credentials(AWS,rolename)
-})
-.then((credentials)=>{
-
-    AWS.config.accessKeyId=credentials.AccessKeyId;
-    AWS.config.secretAccessKey=credentials.SecretAccessKey;
-    AWS.config.sessionToken = credentials.Token;
-        
-})
-.catch((err)=>{
-    console.log(err);
-});
 // var sts = new AWS.STS();
 // sts.assumeRole({
 //   RoleArn: 'arn:aws:iam::612159056927:role/CodeDeployDemo-EC2-Instance-Profile',
