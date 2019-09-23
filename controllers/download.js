@@ -5,8 +5,8 @@ const Schedule = require('../models/schedule');
 var AWS = require('aws-sdk');
 // Set the region 
 AWS.config.update({region: 'ap-northeast-2'});
-var credentials = new AWS.SharedIniFileCredentials({profile: 'mte'});
-AWS.config.credentials = credentials;
+// var credentials = new AWS.SharedIniFileCredentials({profile: 'mte'});
+// AWS.config.credentials = credentials;
 
 exports.download = (req, res, next) => {
     const cellId = req.body.cellId;
