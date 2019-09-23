@@ -2,14 +2,16 @@ const mongoose = require('mongoose');
 const Schedule = require('../models/schedule');
 
 // Load the AWS SDK for Node.js
+process.env.AWS_SDK_LOAD_CONFIG = true; 
+process.env.AWS_PROFILE="assume-role-profile";
 var AWS = require('aws-sdk');
 // Set the region 
 AWS.config.update({region: 'ap-northeast-2'});
 // AWS Credentials
 // var credentials = new AWS.SharedIniFileCredentials({profile: 'mte'});
 // AWS.config.credentials = credentials;
-AWS_SDK_LOAD_CONFIG="true";
-AWS_PROFILE="assume-role-profile";
+// AWS_SDK_LOAD_CONFIG="true";
+// AWS_PROFILE="assume-role-profile";
 
 var sts = new AWS.STS();
 sts.assumeRole({
