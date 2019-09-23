@@ -8,6 +8,9 @@ AWS.config.update({region: 'ap-northeast-2'});
 // AWS Credentials
 // var credentials = new AWS.SharedIniFileCredentials({profile: 'mte'});
 // AWS.config.credentials = credentials;
+AWS_SDK_LOAD_CONFIG="true";
+AWS_PROFILE="assume-role-profile";
+
 var sts = new AWS.STS();
 sts.assumeRole({
   RoleArn: 'arn:aws:iam::612159056927:role/CodeDeployDemo-EC2-Instance-Profile',
