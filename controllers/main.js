@@ -6,8 +6,8 @@ var AWS = require('aws-sdk');
 // Set the region 
 AWS.config.update({region: 'ap-northeast-2'});
 // AWS.config.getCredentials();
-AWS Credentials
-var credentials = new AWS.SharedIniFileCredentials({profile: 'mte'});
+// AWS Credentials
+// var credentials = new AWS.SharedIniFileCredentials({profile: 'mte'});
 // AWS.config.credentials = credentials;
 // AWS_SDK_LOAD_CONFIG="true";
 // AWS_PROFILE="assume-role-profile";
@@ -74,7 +74,7 @@ exports.getIndex = (req, res, next) => {
   if (lastMonthId == 0) {
     lastMonthId = 12;
   }
-  
+
   if (nextMonthId == 13) {
     nextMonthId = 1;
   }

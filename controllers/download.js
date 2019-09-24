@@ -6,8 +6,8 @@ var AWS = require('aws-sdk');
 // Set the region 
 AWS.config.update({region: 'ap-northeast-2'});
 // AWS.config.getCredentials();
-var credentials = new AWS.SharedIniFileCredentials({profile: 'mte'});
-AWS.config.credentials = credentials;
+// var credentials = new AWS.SharedIniFileCredentials({profile: 'mte'});
+// AWS.config.credentials = credentials;
 
 // var sts = new AWS.STS();
 // sts.assumeRole({
