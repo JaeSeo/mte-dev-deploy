@@ -54,31 +54,31 @@ var params = {
   ],
 };
 
-//js date object
-const date = new Date();
-const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "July", "Aug", "Sep", "Oct", "Nov", "Dec"];
-let monthNum = date.getMonth();
-let month = monthNames[monthNum];//this month
-let year = date.getFullYear();//this year
-
-let firstDate = new Date(year, monthNum, 1);
-let firstDay = firstDate.getDay();
-let lastDate = new Date(year, monthNum + 1, 0); 
-let last = lastDate.getDate();
-
-let lastMonthId = monthNum;
-let thisMonthId = monthNum + 1;
-let nextMonthId = monthNum + 2;
-
-if (lastMonthId == 0) {
-  lastMonthId = 12;
-}
-
-if (nextMonthId == 13) {
-  nextMonthId = 1;
-}
-
 exports.getIndex = (req, res, next) => {
+    //js date object
+  const date = new Date();
+  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "July", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  let monthNum = date.getMonth();
+  let month = monthNames[monthNum];//this month
+  let year = date.getFullYear();//this year
+
+  let firstDate = new Date(year, monthNum, 1);
+  let firstDay = firstDate.getDay();
+  let lastDate = new Date(year, monthNum + 1, 0); 
+  let last = lastDate.getDate();
+
+  let lastMonthId = monthNum;
+  let thisMonthId = monthNum + 1;
+  let nextMonthId = monthNum + 2;
+
+  if (lastMonthId == 0) {
+    lastMonthId = 12;
+  }
+  
+  if (nextMonthId == 13) {
+    nextMonthId = 1;
+  }
+
   if (req.query.preMonth) {
     monthNum = +req.query.preMonth - 1;
     month = monthNames[monthNum];
